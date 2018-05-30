@@ -1,0 +1,9 @@
+.vs/
+*.sln
+*.vcxproj
+*.vcxproj.*
+bin/intermediates/
+*.ilk
+*.pdb
+*.iobj
+*.ipdb
