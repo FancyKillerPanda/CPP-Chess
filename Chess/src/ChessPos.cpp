@@ -31,6 +31,16 @@ void ChessPos::operator+=(const ChessPos& other)
 	column = column + other.column;
 }
 
+bool ChessPos::operator==(const ChessPos& other)
+{
+	return row == other.row && column == other.column;
+}
+
+bool ChessPos::operator!=(const ChessPos& other)
+{
+	return row != other.row && column != other.column;
+}
+
 std::ostream& ChessPos::operator<<(std::ostream& stream)
 {
 	stream << "ChessPos(" << row << ", " << column << ")";

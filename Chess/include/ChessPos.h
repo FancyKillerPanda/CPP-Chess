@@ -17,6 +17,8 @@ public:
 
 	ChessPos operator+(const ChessPos& other);
 	void operator+=(const ChessPos& other);
+	bool operator==(const ChessPos& other);
+	bool operator!=(const ChessPos& other);
 	std::ostream& operator<<(std::ostream& stream);
 };
 

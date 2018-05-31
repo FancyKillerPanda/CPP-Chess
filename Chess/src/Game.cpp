@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "Base.h"
 #include "Game.h"
+#include "Pawn.h"
 
 
 Game::Game()
