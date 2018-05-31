@@ -17,10 +17,13 @@ public:
 
 	ChessPos operator+(const ChessPos& other);
 	void operator+=(const ChessPos& other);
+	std::ostream& operator<<(std::ostream& stream);
 };
 
+/*
 std::ostream& operator<<(std::ostream& stream, const ChessPos& other)
 {
 	stream << "ChessPos(" << other.row << ", " << other.column << ")";
 	return stream;
 }
+*/
