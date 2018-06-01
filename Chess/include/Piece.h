@@ -18,4 +18,5 @@ public:
 	Piece(ChessPos pos, sf::Color piece_colour, std::string image_path);
 	void MovePiece(ChessPos position, bool absolute = false);
 	virtual void GetTilesAttacking(const std::vector<Piece>& pieces_list) {}
+	bool IsLocationValid(ChessPos location);
 };

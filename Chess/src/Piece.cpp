@@ -29,3 +29,19 @@ void Piece::MovePiece(ChessPos new_pos, bool absolute)
 
 	setPosition(sf::Vector2f(position.column * TILE_SIZE + TILE_OFFSET, position.row * TILE_SIZE + TILE_OFFSET));
 }
+
+
+bool Piece::IsLocationValid(ChessPos location)
+{
+	if (location.row > 7 || location.row < 0)
+	{
+		return false;
+	}
+
+	if (location.column > 7 || location.column < 0)
+	{
+		return false;
+	}
+	
+	return true;
+}

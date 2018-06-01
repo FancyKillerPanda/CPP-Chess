@@ -1,7 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "Base.h"
 #include "Game.h"
-#include "Pawn.h"
 
 
 Game::Game()
@@ -17,7 +16,7 @@ Game::~Game()
 
 
 void Game::Run()
-{
+{	
 	while (window->isOpen())
 	{
 		HandleEvents();
