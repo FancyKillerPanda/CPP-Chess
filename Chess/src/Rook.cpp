@@ -6,7 +6,6 @@
 
 Rook::Rook(ChessPos pos, sf::Color piece_colour, std::string image_path, std::vector<Piece>& pieces_list) : Piece(pos, piece_colour, image_path)
 {
-	pieces_list.push_back(*this);
 	GetTilesAttacking(pieces_list);
 }
 

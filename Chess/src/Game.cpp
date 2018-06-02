@@ -1,6 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include "Base.h"
 #include "Game.h"
+#include "King.h"
+#include "Queen.h"
 
 
 Game::Game()
