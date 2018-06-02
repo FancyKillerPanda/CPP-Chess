@@ -8,6 +8,6 @@
 class Bishop : public Piece
 {
 public:
-	Bishop(ChessPos pos, sf::Color piece_colour, std::string image_path, std::vector<Piece>& pieces_list);
+	Bishop(ChessPos pos, sf::Color piece_colour, const sf::Texture& texture, std::vector<Piece>& pieces_list);
 	void GetTilesAttacking(std::vector<Piece>& pieces_list);
 };

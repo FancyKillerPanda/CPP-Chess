@@ -3,13 +3,14 @@
 #include "Base.h"
 
 
-Piece::Piece(ChessPos pos, sf::Color piece_colour, std::string image_path)
+Piece::Piece(ChessPos pos, sf::Color piece_colour, const sf::Texture& texture)
 {
 	position = pos;
 	colour = piece_colour;
 
-	texture.loadFromFile(image_path);
+	this->texture = texture;
 	setTexture(texture);
+	setScale(sf::Vector2f(TILE_SIZE / getGlobalBounds().width, TILE_SIZE / getGlobalBounds().height));
 
 	MovePiece(position, true);
 }

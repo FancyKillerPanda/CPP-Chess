@@ -8,6 +8,6 @@
 class Rook : public Piece
 {
 public:
-	Rook(ChessPos pos, sf::Color piece_colour, std::string image_path, std::vector<Piece>& pieces_list);
+	Rook(ChessPos pos, sf::Color piece_colour, const sf::Texture& texture, std::vector<Piece>& pieces_list);
 	void GetTilesAttacking(std::vector<Piece>& pieces_list);
 };

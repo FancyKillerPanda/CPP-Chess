@@ -2,6 +2,7 @@
 
 
 #include <SFML/Graphics.hpp>
+#include "Piece.h"
 
 
 class Game
@@ -16,5 +17,5 @@ public:
 	void Run();
 	void HandleEvents();
 	void Update();
-	void Draw();
+	void Draw(std::vector<Piece>& pieces_list);
 };

@@ -4,7 +4,7 @@
 #include "Base.h"
 
 
-Queen::Queen(ChessPos pos, sf::Color piece_colour, std::string image_path, std::vector<Piece>& pieces_list) : Piece(pos, piece_colour, image_path)
+Queen::Queen(ChessPos pos, sf::Color piece_colour, const sf::Texture& texture, std::vector<Piece>& pieces_list) : Piece(pos, piece_colour, texture)
 {
 	GetTilesAttacking(pieces_list);
 }

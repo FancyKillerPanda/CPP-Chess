@@ -15,7 +15,7 @@ public:
 	std::vector<ChessPos> tiles_attacking;
 
 public:
-	Piece(ChessPos pos, sf::Color piece_colour, std::string image_path);
+	Piece(ChessPos pos, sf::Color piece_colour, const sf::Texture& texture);
 	void MovePiece(ChessPos position, bool absolute = false);
 	virtual void GetTilesAttacking(const std::vector<Piece>& pieces_list) {}
 	bool IsLocationValid(ChessPos location);
