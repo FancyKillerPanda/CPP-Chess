@@ -4,13 +4,14 @@
 #include "Base.h"
 
 
-King::King(ChessPos pos, sf::Color piece_colour, const sf::Texture& texture, std::vector<Piece>& pieces_list) : Piece(pos, piece_colour, texture)
+King::King(ChessPos pos, sf::Color piece_colour, const sf::Texture& texture, std::vector<std::unique_ptr<Piece>>& pieces_list) : Piece(pos, piece_colour, texture)
 {
+	tiles_attacking.reserve(8);
 	GetTilesAttacking(pieces_list);
 }
 
 
-void King::GetTilesAttacking(std::vector<Piece>& pieces_list)
+void King::GetTilesAttacking(std::vector<std::unique_ptr<Piece>>& pieces_list)
 {
 	ChessPos new_loc_u = ChessPos(position.row - 1, position.column);
 	ChessPos new_loc_ur = ChessPos(position.row - 1, position.column + 1);
@@ -30,60 +31,60 @@ void King::GetTilesAttacking(std::vector<Piece>& pieces_list)
 	bool broken_l = false;
 	bool broken_ul = false;
 
-	for (Piece piece : pieces_list)
+	for (auto const& piece : pieces_list)
 	{
-		if (piece.colour != colour)
+		if (piece->colour != colour)
 		{
 			continue;
 		}
 
-		if (piece.position == new_loc_u)
+		if (piece->position == new_loc_u)
 		{
 			broken_u = true;
 		}
 
-		else if (piece.position == new_loc_ur)
+		else if (piece->position == new_loc_ur)
 		{
 			broken_ur = true;
 		}
 
-		else if (piece.position == new_loc_r)
+		else if (piece->position == new_loc_r)
 		{
 			broken_r = true;
 		}
 
-		else if (piece.position == new_loc_dr)
+		else if (piece->position == new_loc_dr)
 		{
 			broken_dr = true;
 		}
 
-		else if (piece.position == new_loc_d)
+		else if (piece->position == new_loc_d)
 		{
 			broken_d = true;
 		}
 
-		else if (piece.position == new_loc_dl)
+		else if (piece->position == new_loc_dl)
 		{
 			broken_dl = true;
 		}
 
-		else if (piece.position == new_loc_l)
+		else if (piece->position == new_loc_l)
 		{
 			broken_l = true;
 		}
 
-		else if (piece.position == new_loc_ul)
+		else if (piece->position == new_loc_ul)
 		{
 			broken_ul = true;
 		}
 	}
 
-	for (Piece piece : pieces_list)
+	for (auto const& piece : pieces_list)
 	{
-		if (piece.colour == colour)
+		if (piece->colour == colour)
 			continue;
 
-		for (ChessPos pos : piece.tiles_attacking)
+		for (ChessPos pos : piece->tiles_attacking)
 		{
 			if (pos == new_loc_u)
 			{

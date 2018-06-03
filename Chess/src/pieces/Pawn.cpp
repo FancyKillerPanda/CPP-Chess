@@ -4,13 +4,14 @@
 #include "Base.h"
 
 
-Pawn::Pawn(ChessPos pos, sf::Color piece_colour, const sf::Texture& texture, std::vector<Piece>& pieces_list) : Piece(pos, piece_colour, texture)
+Pawn::Pawn(ChessPos pos, sf::Color piece_colour, const sf::Texture& texture, std::vector<std::unique_ptr<Piece>>& pieces_list) : Piece(pos, piece_colour, texture)
 {
+	tiles_attacking.reserve(4);
 	GetTilesAttacking(pieces_list);
 }
 
 
-void Pawn::GetTilesAttacking(std::vector<Piece>& pieces_list)
+void Pawn::GetTilesAttacking(std::vector<std::unique_ptr<Piece>>& pieces_list)
 {
 	tiles_attacking.clear();
 
@@ -18,23 +19,23 @@ void Pawn::GetTilesAttacking(std::vector<Piece>& pieces_list)
 	{
 		bool broken = false;
 
-		for (Piece piece : pieces_list)
+		for (auto const& piece : pieces_list)
 		{
-			if (piece.position == ChessPos(position.row - 1, position.column))
+			if (piece->position == ChessPos(position.row - 1, position.column))
 				broken = true;
 
-			else if (piece.position == ChessPos(position.row - 1, position.column - 1))
+			else if (piece->position == ChessPos(position.row - 1, position.column - 1))
 			{
-				if (piece.colour == BLACK)
+				if (piece->colour == BLACK)
 				{
 					if (IsLocationValid(ChessPos(position.row - 1, position.column - 1)))
 						tiles_attacking.push_back(ChessPos(position.row - 1, position.column - 1));
 				}
 			}
 
-			else if (piece.position == ChessPos(position.row - 1, position.column + 1))
+			else if (piece->position == ChessPos(position.row - 1, position.column + 1))
 			{
-				if (piece.colour == BLACK)
+				if (piece->colour == BLACK)
 				{
 					if (IsLocationValid(ChessPos(position.row - 1, position.column + 1)))
 						tiles_attacking.push_back(ChessPos(position.row - 1, position.column + 1));
@@ -49,9 +50,9 @@ void Pawn::GetTilesAttacking(std::vector<Piece>& pieces_list)
 
 			if (position.row == 6)
 			{				
-				for (Piece piece : pieces_list)
+				for (auto const& piece : pieces_list)
 				{
-					if (piece.position == ChessPos(position.row - 2, position.column))
+					if (piece->position == ChessPos(position.row - 2, position.column))
 					{
 						broken = true;
 						break;
@@ -71,23 +72,23 @@ void Pawn::GetTilesAttacking(std::vector<Piece>& pieces_list)
 	{
 		bool broken = false;
 
-		for (Piece piece : pieces_list)
+		for (auto const& piece : pieces_list)
 		{
-			if (piece.position == ChessPos(position.row + 1, position.column))
+			if (piece->position == ChessPos(position.row + 1, position.column))
 				broken = true;
 
-			else if (piece.position == ChessPos(position.row + 1, position.column - 1))
+			else if (piece->position == ChessPos(position.row + 1, position.column - 1))
 			{
-				if (piece.colour == WHITE)
+				if (piece->colour == WHITE)
 				{
 					if (IsLocationValid(ChessPos(position.row + 1, position.column - 1)))
 						tiles_attacking.push_back(ChessPos(position.row + 1, position.column - 1));
 				}
 			}
 
-			else if (piece.position == ChessPos(position.row + 1, position.column + 1))
+			else if (piece->position == ChessPos(position.row + 1, position.column + 1))
 			{
-				if (piece.colour == WHITE)
+				if (piece->colour == WHITE)
 				{
 					if (IsLocationValid(ChessPos(position.row + 1, position.column - 1)))
 						tiles_attacking.push_back(ChessPos(position.row + 1, position.column + 1));
@@ -102,9 +103,9 @@ void Pawn::GetTilesAttacking(std::vector<Piece>& pieces_list)
 
 			if (position.row == 1)
 			{
-				for (Piece piece : pieces_list)
+				for (auto const& piece : pieces_list)
 				{
-					if (piece.position == ChessPos(position.row + 2, position.column))
+					if (piece->position == ChessPos(position.row + 2, position.column))
 					{
 						broken = true;
 						break;

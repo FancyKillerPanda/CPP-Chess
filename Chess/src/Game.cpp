@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <memory>
 #include "Base.h"
 #include "Game.h"
 #include "King.h"
@@ -12,6 +13,7 @@
 Game::Game()
 {
 	window = new sf::RenderWindow(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Chess!");
+	mouse_already_clicked = false;
 	Run();
 }
 
@@ -23,7 +25,9 @@ Game::~Game()
 
 void Game::Run()
 {	
-	std::vector<Piece> pieces_list;
+	std::vector<std::unique_ptr<Piece>> pieces_list;
+	pieces_list.reserve(32);
+
 	/*
 	for (int i = 0; i < 8; i++)
 	{
@@ -66,52 +70,52 @@ void Game::Run()
 	black_queen_texture.loadFromFile("Images/Black Queen.png");
 	black_king_texture.loadFromFile("Images/Black King.png");
 
-	pieces_list.push_back(Pawn(ChessPos(6, 0), WHITE, white_pawn_texture, pieces_list));
-	pieces_list.push_back(Pawn(ChessPos(6, 1), WHITE, white_pawn_texture, pieces_list));
-	pieces_list.push_back(Pawn(ChessPos(6, 2), WHITE, white_pawn_texture, pieces_list));
-	pieces_list.push_back(Pawn(ChessPos(6, 3), WHITE, white_pawn_texture, pieces_list));
-	pieces_list.push_back(Pawn(ChessPos(6, 4), WHITE, white_pawn_texture, pieces_list));
-	pieces_list.push_back(Pawn(ChessPos(6, 5), WHITE, white_pawn_texture, pieces_list));
-	pieces_list.push_back(Pawn(ChessPos(6, 6), WHITE, white_pawn_texture, pieces_list));
-	pieces_list.push_back(Pawn(ChessPos(6, 7), WHITE, white_pawn_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<Pawn>(ChessPos(6, 0), WHITE, white_pawn_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<Pawn>(ChessPos(6, 1), WHITE, white_pawn_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<Pawn>(ChessPos(6, 2), WHITE, white_pawn_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<Pawn>(ChessPos(6, 3), WHITE, white_pawn_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<Pawn>(ChessPos(6, 4), WHITE, white_pawn_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<Pawn>(ChessPos(6, 5), WHITE, white_pawn_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<Pawn>(ChessPos(6, 6), WHITE, white_pawn_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<Pawn>(ChessPos(6, 7), WHITE, white_pawn_texture, pieces_list));
 
-	pieces_list.push_back(Rook(ChessPos(7, 0), WHITE, white_rook_texture, pieces_list));
-	pieces_list.push_back(Knight(ChessPos(7, 1), WHITE, white_knight_texture, pieces_list));
-	pieces_list.push_back(Bishop(ChessPos(7, 2), WHITE, white_bishop_texture, pieces_list));
-	pieces_list.push_back(Queen(ChessPos(7, 3), WHITE, white_queen_texture, pieces_list));
-	pieces_list.push_back(King(ChessPos(7, 4), WHITE, white_king_texture, pieces_list));
-	pieces_list.push_back(Bishop(ChessPos(7, 5), WHITE, white_bishop_texture, pieces_list));
-	pieces_list.push_back(Knight(ChessPos(7, 6), WHITE, white_knight_texture, pieces_list));
-	pieces_list.push_back(Rook(ChessPos(7, 7), WHITE, white_rook_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<Rook>(ChessPos(7, 0), WHITE, white_rook_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<Knight>(ChessPos(7, 1), WHITE, white_knight_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<Bishop>(ChessPos(7, 2), WHITE, white_bishop_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<Queen>(ChessPos(7, 3), WHITE, white_queen_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<King>(ChessPos(7, 4), WHITE, white_king_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<Bishop>(ChessPos(7, 5), WHITE, white_bishop_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<Knight>(ChessPos(7, 6), WHITE, white_knight_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<Rook>(ChessPos(7, 7), WHITE, white_rook_texture, pieces_list));
 
-	pieces_list.push_back(Pawn(ChessPos(1, 0), BLACK, black_pawn_texture, pieces_list));
-	pieces_list.push_back(Pawn(ChessPos(1, 1), BLACK, black_pawn_texture, pieces_list));
-	pieces_list.push_back(Pawn(ChessPos(1, 2), BLACK, black_pawn_texture, pieces_list));
-	pieces_list.push_back(Pawn(ChessPos(1, 3), BLACK, black_pawn_texture, pieces_list));
-	pieces_list.push_back(Pawn(ChessPos(1, 4), BLACK, black_pawn_texture, pieces_list));
-	pieces_list.push_back(Pawn(ChessPos(1, 5), BLACK, black_pawn_texture, pieces_list));
-	pieces_list.push_back(Pawn(ChessPos(1, 6), BLACK, black_pawn_texture, pieces_list));
-	pieces_list.push_back(Pawn(ChessPos(1, 7), BLACK, black_pawn_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<Pawn>(ChessPos(1, 0), BLACK, black_pawn_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<Pawn>(ChessPos(1, 1), BLACK, black_pawn_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<Pawn>(ChessPos(1, 2), BLACK, black_pawn_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<Pawn>(ChessPos(1, 3), BLACK, black_pawn_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<Pawn>(ChessPos(1, 4), BLACK, black_pawn_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<Pawn>(ChessPos(1, 5), BLACK, black_pawn_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<Pawn>(ChessPos(1, 6), BLACK, black_pawn_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<Pawn>(ChessPos(1, 7), BLACK, black_pawn_texture, pieces_list));
 
-	pieces_list.push_back(Rook(ChessPos(0, 0), BLACK, black_rook_texture, pieces_list));
-	pieces_list.push_back(Knight(ChessPos(0, 1), BLACK, black_knight_texture, pieces_list));
-	pieces_list.push_back(Bishop(ChessPos(0, 2), BLACK, black_bishop_texture, pieces_list));
-	pieces_list.push_back(Queen(ChessPos(0, 3), BLACK, black_queen_texture, pieces_list));
-	pieces_list.push_back(King(ChessPos(0, 4), BLACK, black_king_texture, pieces_list));
-	pieces_list.push_back(Bishop(ChessPos(0, 5), BLACK, black_bishop_texture, pieces_list));
-	pieces_list.push_back(Knight(ChessPos(0, 6), BLACK, black_knight_texture, pieces_list));
-	pieces_list.push_back(Rook(ChessPos(0, 7), BLACK, black_rook_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<Rook>(ChessPos(0, 0), BLACK, black_rook_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<Knight>(ChessPos(0, 1), BLACK, black_knight_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<Bishop>(ChessPos(0, 2), BLACK, black_bishop_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<Queen>(ChessPos(0, 3), BLACK, black_queen_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<King>(ChessPos(0, 4), BLACK, black_king_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<Bishop>(ChessPos(0, 5), BLACK, black_bishop_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<Knight>(ChessPos(0, 6), BLACK, black_knight_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<Rook>(ChessPos(0, 7), BLACK, black_rook_texture, pieces_list));
 
 	while (window->isOpen())
 	{
-		HandleEvents();
+		HandleEvents(pieces_list);
 		Update();
 		Draw(pieces_list);
 	}
 }
 
 
-void Game::HandleEvents()
+void Game::HandleEvents(std::vector<std::unique_ptr<Piece>>& pieces_list)
 {
 	sf::Event event;
 
@@ -133,6 +137,13 @@ void Game::HandleEvents()
 
 			break;
 
+		case sf::Event::MouseButtonPressed:
+
+			if (event.mouseButton.button == sf::Mouse::Left)
+			{
+				HandleMouseClick(pieces_list);
+			}
+
 		default:
 			break;
 		}
@@ -146,14 +157,73 @@ void Game::Update()
 }
 
 
-void Game::Draw(std::vector<Piece>& pieces_list)
+void Game::Draw(std::vector<std::unique_ptr<Piece>>& pieces_list)
 {
 	window->clear(BG_COLOUR);
 
-	for (Piece piece : pieces_list)
+	DrawBoard();
+
+	for (auto const& piece : pieces_list)
 	{
-		window->draw(piece);
+		window->draw(*piece);
+	}
+
+	for (sf::RectangleShape shape : tiles_to_highlight)
+	{
+		window->draw(shape);
 	}
 
 	window->display();
+}
+
+
+void Game::DrawBoard()
+{
+	for (int row = 0; row < 8; row++)
+	{
+		for (int column = 0; column < 8; column++)
+		{
+			sf::RectangleShape shape(sf::Vector2f(TILE_SIZE, TILE_SIZE));
+			
+			if ((row + column) % 2 == 0)
+			{
+				shape.setFillColor(WHITE);
+			}
+
+			else
+			{
+				shape.setFillColor(GREY);
+			}
+
+			shape.setPosition(sf::Vector2f(column * TILE_SIZE + TILE_OFFSET, row * TILE_SIZE + TILE_OFFSET));
+
+			window->draw(shape);
+		}
+	}
+}
+
+
+void Game::HandleMouseClick(std::vector<std::unique_ptr<Piece>>& pieces_list)
+{
+
+	for (auto const& piece : pieces_list)
+	{
+		sf::Vector2i mouse_pos = sf::Mouse::getPosition(*window);
+		if (piece->getGlobalBounds().contains(sf::Vector2f(mouse_pos.x, mouse_pos.y)))
+		{
+			tiles_to_highlight.clear();
+			
+			for (ChessPos pos : piece->tiles_attacking)
+			{
+				sf::RectangleShape shape(sf::Vector2f(TILE_SIZE, TILE_SIZE));
+				shape.setFillColor(T_RED);
+
+				shape.setPosition(sf::Vector2f(pos.column * TILE_SIZE + TILE_OFFSET, pos.row * TILE_SIZE + TILE_OFFSET));
+
+				tiles_to_highlight.push_back(shape);
+
+			}
+			mouse_already_clicked = true;
+		}
+	}
 }

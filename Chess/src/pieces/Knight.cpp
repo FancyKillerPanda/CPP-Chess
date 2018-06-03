@@ -4,13 +4,14 @@
 #include "Base.h"
 
 
-Knight::Knight(ChessPos pos, sf::Color piece_colour, const sf::Texture& texture, std::vector<Piece>& pieces_list) : Piece(pos, piece_colour, texture)
+Knight::Knight(ChessPos pos, sf::Color piece_colour, const sf::Texture& texture, std::vector<std::unique_ptr<Piece>>& pieces_list) : Piece(pos, piece_colour, texture)
 {
+	tiles_attacking.reserve(8);
 	GetTilesAttacking(pieces_list);
 }
 
 
-void Knight::GetTilesAttacking(std::vector<Piece>& pieces_list)
+void Knight::GetTilesAttacking(std::vector<std::unique_ptr<Piece>>& pieces_list)
 {
 	tiles_attacking.clear();
 
@@ -23,53 +24,53 @@ void Knight::GetTilesAttacking(std::vector<Piece>& pieces_list)
 	bool left_down_broken = false;
 	bool left_up_broken = false;
 
-	for (Piece piece : pieces_list)
+	for (auto const& piece : pieces_list)
 	{
-		if (piece.position == ChessPos(position.row - 2, position.column - 1))
+		if (piece->position == ChessPos(position.row - 2, position.column - 1))
 		{
-			if (piece.colour == colour)
+			if (piece->colour == colour)
 				up_left_broken = true;
 		}
 
-		else if (piece.position == ChessPos(position.row - 2, position.column + 1))
+		else if (piece->position == ChessPos(position.row - 2, position.column + 1))
 		{
-			if (piece.colour == colour)
+			if (piece->colour == colour)
 				up_right_broken = true;
 		}
 
-		else if (piece.position == ChessPos(position.row - 1, position.column + 2))
+		else if (piece->position == ChessPos(position.row - 1, position.column + 2))
 		{
-			if (piece.colour == colour)
+			if (piece->colour == colour)
 				right_up_broken = true;
 		}
 		
-		else if (piece.position == ChessPos(position.row + 1, position.column + 2))
+		else if (piece->position == ChessPos(position.row + 1, position.column + 2))
 		{
-			if (piece.colour == colour)
+			if (piece->colour == colour)
 				right_down_broken = true;
 		}
 
-		else if (piece.position == ChessPos(position.row + 2, position.column + 1))
+		else if (piece->position == ChessPos(position.row + 2, position.column + 1))
 		{
-			if (piece.colour == colour)
+			if (piece->colour == colour)
 				down_right_broken = true;
 		}
 		
-		else if (piece.position == ChessPos(position.row + 2, position.column - 1))
+		else if (piece->position == ChessPos(position.row + 2, position.column - 1))
 		{
-			if (piece.colour == colour)
+			if (piece->colour == colour)
 				down_left_broken = true;
 		}
 
-		else if (piece.position == ChessPos(position.row - 1, position.column - 2))
+		else if (piece->position == ChessPos(position.row - 1, position.column - 2))
 		{
-			if (piece.colour == colour)
+			if (piece->colour == colour)
 				left_down_broken = true;
 		}
 
-		else if (piece.position == ChessPos(position.row + 1, position.column - 2))
+		else if (piece->position == ChessPos(position.row + 1, position.column - 2))
 		{
-			if (piece.colour == colour)
+			if (piece->colour == colour)
 				left_up_broken = true;
 		}
 	}
