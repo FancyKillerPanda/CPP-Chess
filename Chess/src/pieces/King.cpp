@@ -4,7 +4,7 @@
 #include "Base.h"
 
 
-King::King(ChessPos pos, sf::Color piece_colour, const sf::Texture& texture, std::vector<std::unique_ptr<Piece>>& pieces_list) : Piece(pos, piece_colour, texture)
+King::King(ChessPos pos, sf::Color piece_colour, const sf::Texture& texture, std::vector<std::unique_ptr<Piece>>& pieces_list) : Piece(pos, piece_colour, texture, "KING")
 {
 	tiles_attacking.reserve(8);
 	GetTilesAttacking(pieces_list);
@@ -13,6 +13,8 @@ King::King(ChessPos pos, sf::Color piece_colour, const sf::Texture& texture, std
 
 void King::GetTilesAttacking(std::vector<std::unique_ptr<Piece>>& pieces_list)
 {
+	tiles_attacking.clear();
+
 	ChessPos new_loc_u = ChessPos(position.row - 1, position.column);
 	ChessPos new_loc_ur = ChessPos(position.row - 1, position.column + 1);
 	ChessPos new_loc_r = ChessPos(position.row, position.column + 1);
@@ -81,7 +83,7 @@ void King::GetTilesAttacking(std::vector<std::unique_ptr<Piece>>& pieces_list)
 
 	for (auto const& piece : pieces_list)
 	{
-		if (piece->colour == colour)
+		if (piece->colour == colour || piece->piece_type == "PAWN")
 			continue;
 
 		for (ChessPos pos : piece->tiles_attacking)
@@ -124,6 +126,70 @@ void King::GetTilesAttacking(std::vector<std::unique_ptr<Piece>>& pieces_list)
 			else if (pos == new_loc_ul)
 			{
 				broken_ul = true;
+			}
+		}
+	}
+
+	for (auto const& piece : pieces_list)
+	{
+		if (piece->piece_type == "PAWN")
+		{
+			if (piece->colour != colour)
+			{
+				ChessPos possible_move_left;
+				ChessPos possible_move_right;
+
+				if (piece->colour == WHITE)
+				{
+					possible_move_left = ChessPos(piece->position.row - 1, piece->position.column - 1);
+					possible_move_right = ChessPos(piece->position.row - 1, piece->position.column + 1);
+				}
+
+				else
+				{
+					possible_move_left = ChessPos(piece->position.row + 1, piece->position.column - 1);
+					possible_move_right = ChessPos(piece->position.row + 1, piece->position.column + 1);
+				}
+
+				if (new_loc_u == possible_move_left || new_loc_u == possible_move_right)
+				{
+					broken_u = true;
+				}
+
+				if (new_loc_ur == possible_move_left || new_loc_ur == possible_move_right)
+				{
+					broken_ur = true;
+				}
+
+				if (new_loc_r == possible_move_left || new_loc_r == possible_move_right)
+				{
+					broken_r = true;
+				}
+
+				if (new_loc_dr == possible_move_left || new_loc_dr == possible_move_right)
+				{
+					broken_dr = true;
+				}
+
+				if (new_loc_d == possible_move_left || new_loc_d == possible_move_right)
+				{
+					broken_d = true;
+				}
+
+				if (new_loc_dl == possible_move_left || new_loc_dl == possible_move_right)
+				{
+					broken_dl = true;
+				}
+
+				if (new_loc_l == possible_move_left || new_loc_l == possible_move_right)
+				{
+					broken_l = true;
+				}
+
+				if (new_loc_ul == possible_move_left || new_loc_ul == possible_move_right)
+				{
+					broken_ul = true;
+				}
 			}
 		}
 	}

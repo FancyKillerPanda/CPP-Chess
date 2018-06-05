@@ -3,10 +3,11 @@
 #include "Base.h"
 
 
-Piece::Piece(ChessPos pos, sf::Color piece_colour, const sf::Texture& texture)
+Piece::Piece(ChessPos pos, sf::Color piece_colour, const sf::Texture& texture, std::string piece_type)
 {
 	position = pos;
 	colour = piece_colour;
+	this->piece_type = piece_type;
 
 	this->texture = texture;
 	setTexture(texture);

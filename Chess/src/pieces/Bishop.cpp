@@ -4,7 +4,7 @@
 #include "Base.h"
 
 
-Bishop::Bishop(ChessPos pos, sf::Color piece_colour, const sf::Texture& texture, std::vector<std::unique_ptr<Piece>>& pieces_list) : Piece(pos, piece_colour, texture)
+Bishop::Bishop(ChessPos pos, sf::Color piece_colour, const sf::Texture& texture, std::vector<std::unique_ptr<Piece>>& pieces_list) : Piece(pos, piece_colour, texture, "BISHOP")
 {
 	tiles_attacking.reserve(13);
 	GetTilesAttacking(pieces_list);

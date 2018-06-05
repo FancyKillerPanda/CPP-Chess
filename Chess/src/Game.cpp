@@ -85,7 +85,6 @@ void Game::Run()
 	pieces_list.emplace_back(std::make_unique<Knight>(ChessPos(7, 1), WHITE, white_knight_texture, pieces_list));
 	pieces_list.emplace_back(std::make_unique<Bishop>(ChessPos(7, 2), WHITE, white_bishop_texture, pieces_list));
 	pieces_list.emplace_back(std::make_unique<Queen>(ChessPos(7, 3), WHITE, white_queen_texture, pieces_list));
-	pieces_list.emplace_back(std::make_unique<King>(ChessPos(7, 4), WHITE, white_king_texture, pieces_list));
 	pieces_list.emplace_back(std::make_unique<Bishop>(ChessPos(7, 5), WHITE, white_bishop_texture, pieces_list));
 	pieces_list.emplace_back(std::make_unique<Knight>(ChessPos(7, 6), WHITE, white_knight_texture, pieces_list));
 	pieces_list.emplace_back(std::make_unique<Rook>(ChessPos(7, 7), WHITE, white_rook_texture, pieces_list));
@@ -103,11 +102,13 @@ void Game::Run()
 	pieces_list.emplace_back(std::make_unique<Knight>(ChessPos(0, 1), BLACK, black_knight_texture, pieces_list));
 	pieces_list.emplace_back(std::make_unique<Bishop>(ChessPos(0, 2), BLACK, black_bishop_texture, pieces_list));
 	pieces_list.emplace_back(std::make_unique<Queen>(ChessPos(0, 3), BLACK, black_queen_texture, pieces_list));
-	pieces_list.emplace_back(std::make_unique<King>(ChessPos(0, 4), BLACK, black_king_texture, pieces_list));
 	pieces_list.emplace_back(std::make_unique<Bishop>(ChessPos(0, 5), BLACK, black_bishop_texture, pieces_list));
 	pieces_list.emplace_back(std::make_unique<Knight>(ChessPos(0, 6), BLACK, black_knight_texture, pieces_list));
 	pieces_list.emplace_back(std::make_unique<Rook>(ChessPos(0, 7), BLACK, black_rook_texture, pieces_list));
 
+	pieces_list.emplace_back(std::make_unique<King>(ChessPos(7, 4), WHITE, white_king_texture, pieces_list));
+	pieces_list.emplace_back(std::make_unique<King>(ChessPos(0, 4), BLACK, black_king_texture, pieces_list));
+	
 	while (window->isOpen())
 	{
 		HandleEvents(pieces_list);
