@@ -13,7 +13,7 @@
 
 #define BG_COLOUR WHITE
 
-#define TILE_SIZE 70
+#define TILE_SIZE 90
 #define SCREEN_WIDTH TILE_SIZE * 8
 #define SCREEN_HEIGHT TILE_SIZE * 8
 #define TILE_OFFSET 0
