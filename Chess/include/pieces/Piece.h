@@ -21,4 +21,5 @@ public:
 	void MovePiece(ChessPos position, bool absolute = false);
 	virtual void GetTilesAttacking(std::vector<std::unique_ptr<Piece>>& pieces_list) {}
 	bool IsLocationValid(ChessPos location);
+	virtual bool InCheck(std::vector<std::unique_ptr<Piece>>& pieces_list) { return false; }
 };
