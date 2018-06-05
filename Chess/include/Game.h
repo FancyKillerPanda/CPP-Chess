@@ -10,8 +10,10 @@ class Game
 {
 public:
 	sf::RenderWindow* window;
-	bool mouse_already_clicked;
+	bool highlighting;
 	std::vector<sf::RectangleShape> tiles_to_highlight;
+	sf::Color turn;
+	Piece* piece_to_move;
 
 public:
 	Game();

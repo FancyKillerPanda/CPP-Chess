@@ -18,6 +18,6 @@ public:
 public:
 	Piece(ChessPos pos, sf::Color piece_colour, const sf::Texture& texture);
 	void MovePiece(ChessPos position, bool absolute = false);
-	virtual void GetTilesAttacking(const std::vector<std::unique_ptr<Piece>>& pieces_list) {}
+	virtual void GetTilesAttacking(std::vector<std::unique_ptr<Piece>>& pieces_list) {}
 	bool IsLocationValid(ChessPos location);
 };

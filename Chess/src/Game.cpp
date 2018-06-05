@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
+#include <algorithm>
 #include "Base.h"
 #include "Game.h"
 #include "King.h"
@@ -13,7 +14,8 @@
 Game::Game()
 {
 	window = new sf::RenderWindow(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Chess!");
-	mouse_already_clicked = false;
+	highlighting = false;
+	turn = WHITE;
 	Run();
 }
 
@@ -205,25 +207,87 @@ void Game::DrawBoard()
 
 void Game::HandleMouseClick(std::vector<std::unique_ptr<Piece>>& pieces_list)
 {
+	sf::Vector2i mouse_pos = sf::Mouse::getPosition(*window);
 
-	for (auto const& piece : pieces_list)
+	if (!highlighting)
 	{
-		sf::Vector2i mouse_pos = sf::Mouse::getPosition(*window);
-		if (piece->getGlobalBounds().contains(sf::Vector2f(mouse_pos.x, mouse_pos.y)))
+
+		for (auto const& piece : pieces_list)
 		{
-			tiles_to_highlight.clear();
-			
-			for (ChessPos pos : piece->tiles_attacking)
+			if (piece->colour == turn)
 			{
-				sf::RectangleShape shape(sf::Vector2f(TILE_SIZE, TILE_SIZE));
-				shape.setFillColor(T_RED);
+				if (piece->getGlobalBounds().contains(sf::Vector2f(mouse_pos.x, mouse_pos.y)))
+				{
+					tiles_to_highlight.clear();
 
-				shape.setPosition(sf::Vector2f(pos.column * TILE_SIZE + TILE_OFFSET, pos.row * TILE_SIZE + TILE_OFFSET));
+					for (ChessPos pos : piece->tiles_attacking)
+					{
+						sf::RectangleShape shape(sf::Vector2f(TILE_SIZE, TILE_SIZE));
+						shape.setFillColor(T_RED);
 
-				tiles_to_highlight.push_back(shape);
+						shape.setPosition(sf::Vector2f(pos.column * TILE_SIZE + TILE_OFFSET, pos.row * TILE_SIZE + TILE_OFFSET));
 
+						tiles_to_highlight.push_back(shape);
+					}
+
+					highlighting = true;
+					piece_to_move = &(*piece);
+				}
 			}
-			mouse_already_clicked = true;
+		}
+	}
+
+	else
+	{
+		ChessPos clicked_pos(floorf((mouse_pos.y - TILE_OFFSET) / (float)TILE_SIZE), floorf((mouse_pos.x - TILE_OFFSET) / (float)TILE_SIZE));
+
+		if (std::find(piece_to_move->tiles_attacking.begin(), piece_to_move->tiles_attacking.end(), clicked_pos) != piece_to_move->tiles_attacking.end())
+		{
+			piece_to_move->MovePiece(clicked_pos, true);
+			highlighting = false;
+			tiles_to_highlight.clear();
+
+			for (auto& piece : pieces_list)
+			{
+				piece->GetTilesAttacking(pieces_list);
+			}
+			
+			if (turn == WHITE)
+			{
+				turn = BLACK;
+			}
+
+			else
+			{
+				turn = WHITE;
+			}
+		}
+
+		else
+		{
+			for (auto const& piece : pieces_list)
+			{
+				if (piece->colour == turn)
+				{
+					if (piece->getGlobalBounds().contains(sf::Vector2f(mouse_pos.x, mouse_pos.y)))
+					{
+						tiles_to_highlight.clear();
+
+						for (ChessPos pos : piece->tiles_attacking)
+						{
+							sf::RectangleShape shape(sf::Vector2f(TILE_SIZE, TILE_SIZE));
+							shape.setFillColor(T_RED);
+
+							shape.setPosition(sf::Vector2f(pos.column * TILE_SIZE + TILE_OFFSET, pos.row * TILE_SIZE + TILE_OFFSET));
+
+							tiles_to_highlight.push_back(shape);
+						}
+
+						highlighting = true;
+						piece_to_move = &(*piece);
+					}
+				}
+			}
 		}
 	}
 }
