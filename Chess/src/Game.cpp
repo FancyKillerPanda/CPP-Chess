@@ -211,7 +211,6 @@ void Game::HandleMouseClick(std::vector<std::unique_ptr<Piece>>& pieces_list)
 
 	if (!highlighting)
 	{
-
 		for (auto const& piece : pieces_list)
 		{
 			if (piece->colour == turn)
@@ -243,6 +242,16 @@ void Game::HandleMouseClick(std::vector<std::unique_ptr<Piece>>& pieces_list)
 
 		if (std::find(piece_to_move->tiles_attacking.begin(), piece_to_move->tiles_attacking.end(), clicked_pos) != piece_to_move->tiles_attacking.end())
 		{
+			for (int i = 0; i < pieces_list.size(); i++)
+			{
+				auto& piece = pieces_list[i];
+
+				if (piece->position == clicked_pos)
+				{
+					pieces_list.erase(pieces_list.begin() + i);
+				}
+			}
+
 			piece_to_move->MovePiece(clicked_pos, true);
 			highlighting = false;
 			tiles_to_highlight.clear();
