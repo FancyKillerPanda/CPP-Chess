@@ -78,7 +78,7 @@ void Game::HandleEvents()
 
 void Game::Update()
 {
-
+	
 }
 
 
@@ -96,6 +96,22 @@ void Game::Draw()
 	for (sf::RectangleShape shape : tiles_to_highlight)
 	{
 		window->draw(shape);
+	}
+
+	for (auto const& piece : pieces_list)
+	{
+		if (piece->piece_type == "KING")
+		{
+			if (piece->InCheck(pieces_list))
+			{
+				sf::RectangleShape shape(sf::Vector2f(TILE_SIZE, TILE_SIZE));
+				shape.setFillColor(T_RED);
+
+				shape.setPosition(sf::Vector2f(piece->position.column * TILE_SIZE + TILE_OFFSET, piece->position.row * TILE_SIZE + TILE_OFFSET));
+
+				window->draw(shape);
+			}
+		}
 	}
 
 	window->display();
