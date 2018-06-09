@@ -47,3 +47,47 @@ bool Piece::IsLocationValid(ChessPos location)
 	
 	return true;
 }
+
+
+bool InCheck(ChessPos tile_location, sf::Color by_colour, std::vector<std::unique_ptr<Piece>>& pieces_list)
+{
+	for (auto const& piece : pieces_list)
+	{
+		if (piece->colour == by_colour)
+		{
+			continue;
+		}
+
+		for (ChessPos pos : piece->tiles_attacking)
+		{
+			if (pos == tile_location)
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+
+bool InCheck(Piece piece_to_check, std::vector<std::unique_ptr<Piece>>& pieces_list)
+{
+	for (auto const& piece : pieces_list)
+	{
+		if (piece->colour == piece_to_check.colour)
+		{
+			continue;
+		}
+
+		for (ChessPos pos : piece->tiles_attacking)
+		{
+			if (pos == piece_to_check.position)
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}

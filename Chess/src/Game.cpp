@@ -103,7 +103,7 @@ void Game::Draw()
 	{
 		if (piece->piece_type == "KING")
 		{
-			if (piece->InCheck(pieces_list))
+			if (InCheck(*piece, pieces_list))
 			{
 				sf::RectangleShape shape(sf::Vector2f(TILE_SIZE, TILE_SIZE));
 				shape.setFillColor(T_RED);

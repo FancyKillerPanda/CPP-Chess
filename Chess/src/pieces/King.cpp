@@ -242,25 +242,3 @@ void King::GetTilesAttacking(std::vector<std::unique_ptr<Piece>>& pieces_list)
 			tiles_attacking.push_back(new_loc_ul);
 	}
 }
-
-
-bool King::InCheck(std::vector<std::unique_ptr<Piece>>& pieces_list)
-{
-	for (auto const& piece : pieces_list)
-	{
-		if (piece->colour == colour)
-		{
-			continue;
-		}
-
-		for (ChessPos pos : piece->tiles_attacking)
-		{
-			if (pos == position)
-			{
-				return true;
-			}
-		}
-	}
-
-	return false;
-}
