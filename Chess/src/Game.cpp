@@ -16,6 +16,7 @@ Game::Game()
 	window = new sf::RenderWindow(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Chess!");
 	highlighting = false;
 	turn = WHITE;
+	window->setPosition(sf::Vector2i(0, 0));
 	Run();
 }
 
