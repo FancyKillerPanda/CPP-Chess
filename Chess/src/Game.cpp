@@ -191,6 +191,31 @@ void Game::HandleMouseClick()
 					pieces_list.erase(pieces_list.begin() + i);
 				}
 			}
+			
+			if (piece_to_move->piece_type == "KING" && abs(clicked_pos.column - piece_to_move->position.column) == 2)
+			{
+				if (clicked_pos.column - piece_to_move->position.column > 0)
+				{
+					for (auto const& piece : pieces_list)
+					{
+						if (piece->piece_type == "ROOK" && piece->position == ChessPos(piece_to_move->position.row, 7))
+						{
+							piece->MovePiece(ChessPos(piece_to_move->position.row, clicked_pos.column - 1), true);
+						}
+					}
+				}
+
+				else if (clicked_pos.column - piece_to_move->position.column < 0)
+				{
+					for (auto const& piece : pieces_list)
+					{
+						if (piece->piece_type == "ROOK" && piece->position == ChessPos(piece_to_move->position.row, 0))
+						{
+							piece->MovePiece(ChessPos(piece_to_move->position.row, clicked_pos.column + 1), true);
+						}
+					}
+				}
+			}
 
 			piece_to_move->MovePiece(clicked_pos, true);
 			highlighting = false;
