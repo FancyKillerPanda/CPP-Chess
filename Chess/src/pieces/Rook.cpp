@@ -7,7 +7,6 @@
 Rook::Rook(ChessPos pos, sf::Color piece_colour, const sf::Texture& texture, std::vector<std::unique_ptr<Piece>>& pieces_list) : Piece(pos, piece_colour, texture, "ROOK")
 {
 	tiles_attacking.reserve(14);
-	GetTilesAttacking(pieces_list);
 }
 
 

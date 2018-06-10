@@ -7,7 +7,6 @@
 Knight::Knight(ChessPos pos, sf::Color piece_colour, const sf::Texture& texture, std::vector<std::unique_ptr<Piece>>& pieces_list) : Piece(pos, piece_colour, texture, "KNIGHT")
 {
 	tiles_attacking.reserve(8);
-	GetTilesAttacking(pieces_list);
 }
 
 

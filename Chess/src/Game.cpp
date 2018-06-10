@@ -318,4 +318,9 @@ void Game::CreatePieces()
 
 	pieces_list.emplace_back(std::make_unique<King>(ChessPos(7, 4), WHITE, white_king_texture, pieces_list));
 	pieces_list.emplace_back(std::make_unique<King>(ChessPos(0, 4), BLACK, black_king_texture, pieces_list));
+
+	for (auto& piece : pieces_list)
+	{
+		piece->GetTilesAttacking(pieces_list);
+	}
 }
