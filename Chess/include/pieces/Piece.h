@@ -15,10 +15,11 @@ public:
 	sf::Color colour;
 	std::vector<ChessPos> tiles_attacking;
 	std::string piece_type;
+	bool has_moved;
 
 public:
 	Piece(ChessPos pos, sf::Color piece_colour, const sf::Texture& texture, std::string piece_type);
-	void MovePiece(ChessPos position, bool absolute = false);
+	void MovePiece(ChessPos position, bool absolute = false, bool starting_piece = false);
 	virtual void GetTilesAttacking(std::vector<std::unique_ptr<Piece>>& pieces_list) {}
 	bool IsLocationValid(ChessPos location);
 };

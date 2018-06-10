@@ -241,4 +241,96 @@ void King::GetTilesAttacking(std::vector<std::unique_ptr<Piece>>& pieces_list)
 		if (IsLocationValid(new_loc_ul))
 			tiles_attacking.push_back(new_loc_ul);
 	}
+
+	if (!InCheck(*this, pieces_list))
+	{
+		if (!has_moved)
+		{
+			bool queen_side_castle = true;
+			bool king_side_castle = true;
+
+			for (auto const& piece : pieces_list)
+			{
+				if (piece->piece_type == "ROOK" && piece->colour == colour)
+				{
+					if (!piece->has_moved)
+					{
+						if (piece->position.column > position.column)
+						{
+							for (int i = position.column + 1; i < piece->position.column; i++)
+							{
+								for (auto const& piece_1 : pieces_list)
+								{
+									if (piece_1->position == ChessPos(position.row, i))
+									{
+										king_side_castle = false;
+										break;
+									}
+								}
+
+								sf::Color by_colour;
+
+								if (colour == WHITE)
+								{
+									by_colour = BLACK;
+								}
+
+								else
+								{
+									by_colour = WHITE;
+								}
+
+								if (InCheck(ChessPos(position.row, i), by_colour, pieces_list))
+								{
+									king_side_castle = false;
+								}
+							}
+						}
+
+						if (piece->position.column < position.column)
+						{
+							for (int i = position.column - 1; i > piece->position.column; i--)
+							{
+								for (auto const& piece_1 : pieces_list)
+								{
+									if (piece_1->position == ChessPos(position.row, i))
+									{
+										queen_side_castle = false;
+										break;
+									}
+								}
+
+								sf::Color by_colour;
+
+								if (colour == WHITE)
+								{
+									by_colour = BLACK;
+								}
+
+								else
+								{
+									by_colour = WHITE;
+								}
+
+								if (InCheck(ChessPos(position.row, i), by_colour, pieces_list))
+								{
+									queen_side_castle = false;
+								}
+							}
+						}
+					}
+				}
+			}
+
+			if (king_side_castle)
+			{
+				tiles_attacking.push_back(ChessPos(position.row, position.column + 2));
+			}
+
+			if (queen_side_castle)
+			{
+				tiles_attacking.push_back(ChessPos(position.row, position.column - 2));
+			}
+		}
+	}
 }

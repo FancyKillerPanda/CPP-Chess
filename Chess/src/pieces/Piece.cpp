@@ -8,16 +8,17 @@ Piece::Piece(ChessPos pos, sf::Color piece_colour, const sf::Texture& texture, s
 	position = pos;
 	colour = piece_colour;
 	this->piece_type = piece_type;
+	has_moved = false;
 
 	this->texture = texture;
 	setTexture(texture);
 	setScale(sf::Vector2f(TILE_SIZE / getGlobalBounds().width, TILE_SIZE / getGlobalBounds().height));
 
-	MovePiece(position, true);
+	MovePiece(position, true, true);
 }
 
 
-void Piece::MovePiece(ChessPos new_pos, bool absolute)
+void Piece::MovePiece(ChessPos new_pos, bool absolute, bool starting_piece)
 {
 	if (!absolute)
 	{
@@ -27,6 +28,11 @@ void Piece::MovePiece(ChessPos new_pos, bool absolute)
 	else
 	{
 		position = new_pos;
+	}
+
+	if (!starting_piece)
+	{
+		has_moved = true;
 	}
 
 	setPosition(sf::Vector2f(position.column * TILE_SIZE + TILE_OFFSET, position.row * TILE_SIZE + TILE_OFFSET));
@@ -53,7 +59,7 @@ bool InCheck(ChessPos tile_location, sf::Color by_colour, std::vector<std::uniqu
 {
 	for (auto const& piece : pieces_list)
 	{
-		if (piece->colour == by_colour)
+		if (piece->colour != by_colour)
 		{
 			continue;
 		}
